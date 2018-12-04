@@ -1,2 +1,44 @@
 <h1>マイページ</h1>
-<%= @current_user.name %>
+
+<div id="app">
+  <div id="map"></div>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>店舗名</th>
+      <th>住所</th>
+      <th>電話番号</th>
+      <th>営業時間</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @favorites.each do |d| %>
+      <tr>
+        <input type="hidden" name="latitude" value="<%= d.latitude %>">
+　    　<input type="hidden" name="longitude" value="<%= d.longitude %>">
+        <td><%= d.name %></td>
+        <td><%= d.address %></td>
+        <td><%= d.tel %></td>
+        <td><button id="display">地図表示</button></td>
+        <td><%= link_to '削除', d, method: :delete, data: { confirm: '本当に削除してもよろしいですか' }, remote: true %></td>
+        <!--<td><button class="destroy">削除</button></td>-->
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<template id="shop_list_template">
+  <tr>
+    <td class="name"></td>
+    <td class="address"></td>
+    <td class="tel"></td>
+    <td><a class="delete" data-confirm="本当に削除してもよろしいですか" data-remote="true" rel="nofollow" data-method="delete" href="">削除</a></td>
+  </tr>
+</template>
+
+<body>
+</body>

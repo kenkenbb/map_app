@@ -2,8 +2,8 @@
 /* global app */
 /* global google */
 /* global navigator */
-console.log('map.js');
 if (!app) var app = {};
+
 
 class Map {
   constructor( target ) {
@@ -23,8 +23,35 @@ class Map {
           lng: position.coords.longitude
         };
         self.gmap.setCenter(pos);
+        
+      var my_marker = new google.maps.Marker({
+      map : self.gmap,           
+      position : pos,
+      title: '現在位置',
+      animation: google.maps.Animation.DROP  
+    });
+        
       });
+    
     }
+    
+$(document).on('click', '#display', function(){
+  console.log('地図表示');
+  var new_latitude = $(this).parents('tr').find('[name="latitude"]').val();
+  var new_longitude = $(this).parents('tr').find('[name="longitude"]').val();
+  var new_pos = new google.maps.LatLng(new_latitude, new_longitude);
+        new google.maps.Marker({
+        map: self.gmap,
+        position: new_pos,
+        animation: google.maps.Animation.DROP,
+        icon: {
+        url: '/flag2.png',
+        scaledSize: new google.maps.Size(24, 24)
+        },
+        });
+        self.gmap.panTo(new_pos);
+  });
+    
   }
   draw( data ) {
     var self = this;
@@ -49,6 +76,10 @@ class Map {
         var marker = new google.maps.Marker({
           position: pos,
           title: d.name,
+          icon: {
+          url: '/flag2.png',
+          scaledSize: new google.maps.Size(24, 24)
+          },
           animation: google.maps.Animation.DROP
         });
         marker.setMap( self.gmap );
@@ -63,13 +94,12 @@ class Map {
           marker_info.open( self.gmap, marker );
           // 現在開いているマーカーを登録
           self.current_marker = marker_info;
-          
           setTimeout( function() {
             if ( confirm('このお店をお気に入りに保存しますか？') ) {
               app.shop.save( d ).then( function( data ) {
                 alert('お店情報を保存しました');
               }, function() {
-                alert('お店情報を保存に失敗しました');
+                alert('お店情報の保存に失敗しました');
               });
             }
           }, 1000 );
@@ -79,5 +109,9 @@ class Map {
         self.markers.push( marker );
       });
     }
+  
+    
   }
+  
+  
 }

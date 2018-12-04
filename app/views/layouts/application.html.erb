@@ -4,16 +4,21 @@
     <title>MapApp</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRPWNXsHUisypZ5lJjcmVBbFjZL4CIYXs" async defer></script>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRPWNXsHUisypZ5lJjcmVBbFjZL4CIYXs" async defer></script>
   </head>
 
   <body>
     <%= render 'header' %>
     <div class="container">
+      <% if flash[:notice].present? %>
+        <div class="alert alert-success"><%= flash[:notice] %></div>
+      <% end %>
+      
       <%= yield %>
     </div>
   </body>

@@ -7,6 +7,7 @@ class UsersController < ApplicationController
     user = User.new(user_params)
     if user.save
       session[:user_id] = user.id
+      flash[:notice] = "ユーザー：#{user.name}を登録しました"
       redirect_to mypage_path
     else
       # flash: {
@@ -14,6 +15,7 @@ class UsersController < ApplicationController
       #   error_messages: user.errors.full_messages
       # }
       flash[:user] =  user
+      flash[:error_messages] = user.errors.full_messages
       
         redirect_back(fallback_location: root_path)
     end
@@ -24,6 +26,7 @@ class UsersController < ApplicationController
   end 
   
   def me
+    @favorites = Favorite.all
   end
 
   private
